@@ -94,5 +94,5 @@ def payload_generator(levels=0, dimensions=None, sequential=True, string=True, m
 
 
 if __name__ == '__main__':
-    print payload_generator(levels=2, dimensions=[[3,4,5],[5,5,5]], sequential=False, string=False, max_int=8)
+    print(payload_generator(levels=2, dimensions=[[3,4,5],[5,5,5]], sequential=False, string=False, max_int=8))
 #     pass

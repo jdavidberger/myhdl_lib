@@ -1,5 +1,5 @@
 from myhdl import *
-from mem import ram_sdp_ar
+from myhdl_lib.mem import ram_sdp_ar
 
 
 

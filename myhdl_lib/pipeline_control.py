@@ -1,5 +1,5 @@
 from myhdl import *
-from utils import assign
+from myhdl_lib.utils import assign
 
 def pipeline_control(rst, clk, rx_rdy, rx_vld, tx_rdy, tx_vld, stage_enable, stop_rx=None, stop_tx=None):
     """ Synchronizes data flow in a processing pipeline. 

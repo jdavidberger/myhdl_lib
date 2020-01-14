@@ -1,8 +1,8 @@
 from myhdl import *
-from mem   import ram_sdp_ar
+from myhdl_lib.mem   import ram_sdp_ar
 
 
-
+@block
 def fifo(rst, clk, full, we, din, empty, re, dout, afull=None, aempty=None, afull_th=None, aempty_th=None, ovf=None, udf=None, count=None, count_max=None, depth=None, width=None):
     """ Synchronous FIFO
 
@@ -36,7 +36,7 @@ def fifo(rst, clk, full, we, din, empty, re, dout, afull=None, aempty=None, aful
     if (depth == None):
         depth = 2
 
-    full_flg        = Signal(bool(1))
+    full_flg        = Signal(bool(0))
     empty_flg       = Signal(bool(1))
     we_safe         = Signal(bool(0))
     re_safe         = Signal(bool(0))
@@ -62,28 +62,22 @@ def fifo(rst, clk, full, we, din, empty, re, dout, afull=None, aempty=None, aful
         rd_ptr_new.next     = ((rd_ptr + 1) % depth)
         wr_ptr_new.next     = ((wr_ptr + 1) % depth)
 
-    @always(clk.posedge)
+    @always_seq(clk.posedge, reset = rst)
     def state_main():
-        if (rst):
-            wr_ptr.next     = 0
-            rd_ptr.next     = 0
-            full_flg.next   = 0
+        # Write pointer
+        if (we_safe): wr_ptr.next = wr_ptr_new
+        # Read pointer
+        if (re_safe): rd_ptr.next = rd_ptr_new
+        # Empty flag
+        if (we_safe):
+            empty_flg.next  = 0
+        elif (re_safe and (rd_ptr_new == wr_ptr)):
             empty_flg.next  = 1
-        else:
-            # Write pointer
-            if (we_safe): wr_ptr.next = wr_ptr_new
-            # Read pointer
-            if (re_safe): rd_ptr.next = rd_ptr_new
-            # Empty flag
-            if (we_safe):
-                empty_flg.next  = 0
-            elif (re_safe and (rd_ptr_new == wr_ptr)):
-                empty_flg.next  = 1
-            # Full flag
-            if (re_safe):
-                full_flg.next   = 0
-            elif (we_safe and (wr_ptr_new == rd_ptr)):
-                full_flg.next   = 1
+        # Full flag
+        if (re_safe):
+            full_flg.next   = False
+        elif (we_safe and (wr_ptr_new == rd_ptr)):
+            full_flg.next   = True
 
 
     #===========================================================================

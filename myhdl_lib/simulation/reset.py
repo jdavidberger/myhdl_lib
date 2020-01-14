@@ -5,7 +5,7 @@ class ResetSync(ResetSignal):
     ''' Synchronous reset '''
     def __init__(self, clk, val, active):
         self.clk = clk
-        ResetSignal.__init__(self, val, active, async=False)
+        ResetSignal.__init__(self, val, active, isasync = False)
 
     def pulse(self, length_cc=10):
         self.next = self.active

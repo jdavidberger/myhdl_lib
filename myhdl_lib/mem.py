@@ -1,5 +1,6 @@
 from myhdl import *
 
+@block
 def rom(addr, dout, CONTENT):
     ''' CONTENT == tuple of non-sparse values '''
     @always_comb
@@ -39,7 +40,7 @@ def ram_sp_wf(clk, we, addr, di, do):
 
     return write
 
-
+@block
 def ram_sp_ar(clk, we, addr, di, do):
     ''' RAM: Single-Port, Asynchronous Read '''
 
@@ -56,7 +57,7 @@ def ram_sp_ar(clk, we, addr, di, do):
 
     return write, read
 
-
+@block
 def ram_sdp_rf(clk, we, addrw, addrr, di, do):
     ''' RAM: Simple-Dual-Port, Read-First '''
 
@@ -70,7 +71,7 @@ def ram_sdp_rf(clk, we, addrw, addrr, di, do):
 
     return write
 
-
+@block
 def ram_sdp_wf(clk, we, addrw, addrr, di, do):
     ''' RAM: Simple-Dual-Port, Write-First '''
 
@@ -89,7 +90,7 @@ def ram_sdp_wf(clk, we, addrw, addrr, di, do):
 
     return write, read
 
-
+@block
 def ram_sdp_ar(clk, we, addrw, addrr, di, do):
     ''' RAM: Simple-Dual-Port, Asynchronous Read'''
 
@@ -106,7 +107,7 @@ def ram_sdp_ar(clk, we, addrw, addrr, di, do):
 
     return write, read
 
-
+@block
 def ram_dp_rf(clka, clkb, wea, web, addra, addrb, dia, dib, doa, dob):
     ''' RAM: Dual-Port, Read-First '''
 

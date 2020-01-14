@@ -1,5 +1,5 @@
 from myhdl import *
-from mem   import ram_sdp_ar
+from myhdl_lib.mem   import ram_sdp_ar
 
 
 def fifo_async(wrst, rrst, wclk, rclk, wfull, we, wdata, rempty, re, rdata, depth=None, width=None):

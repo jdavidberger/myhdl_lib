@@ -9,7 +9,7 @@ def rom(addr, dout, CONTENT):
 
     return read
 
-
+@block
 def ram_sp_rf(clk, we, addr, di, do):
     ''' RAM: Single-Port, Read-First '''
 
@@ -24,7 +24,7 @@ def ram_sp_rf(clk, we, addr, di, do):
 
     return write
 
-
+@block
 def ram_sp_wf(clk, we, addr, di, do):
     ''' RAM: Single-Port, Write-First '''
 
@@ -129,7 +129,7 @@ def ram_dp_rf(clka, clkb, wea, web, addra, addrb, dia, dib, doa, dob):
 
     return writea, writeb
 
-
+@block
 def ram_dp_wf(clka, clkb, wea, web, addra, addrb, dia, dib, doa, dob):
     ''' RAM: Dual-Port, Write-First '''
 
@@ -153,7 +153,7 @@ def ram_dp_wf(clka, clkb, wea, web, addra, addrb, dia, dib, doa, dob):
 
     return writea, writeb
 
-
+@block
 def ram_dp_ar(clka, clkb, wea, web, addra, addrb, dia, dib, doa, dob):
     ''' RAM: Dual-Port, Asynchronous Read '''
 

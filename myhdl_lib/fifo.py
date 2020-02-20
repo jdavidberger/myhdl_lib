@@ -103,25 +103,19 @@ def fifo(rst, clk, full, we, din, empty, re, dout, afull=None, aempty=None, aful
             else:
                     count_new.next = count_r
 
-        @always(clk.posedge)
+        @always_seq(clk.posedge, reset = rst)
         def count_proc():
-            if (rst):
-                count_r.next = 0
-            else:
-                count_r.next = count_new
+            count_r.next = count_new
 
     ''' Count max '''
     if (count_max != None):
         assert count_max.max > depth
         count_max_r = Signal(intbv(0, min=0,max=count_max.max))
-        @always(clk.posedge)
+        @always_seq(clk.posedge, reset = rst)
         def count_max_proc():
-            if (rst):
-                count_max_r.next = 0
-            else:
-                if (count_max_r < count_new):
-                    count_max_r.next = count_new
-
+            if (count_max_r < count_new):
+                count_max_r.next = count_new
+                    
         @always_comb
         def count_max_out():
             count_max.next = count_max_r
@@ -133,23 +127,18 @@ def fifo(rst, clk, full, we, din, empty, re, dout, afull=None, aempty=None, aful
     if (afull != None):
         if (afull_th == None):
             afull_th = depth//2
-        @always(clk.posedge)
+            
+        @always_seq(clk.posedge, reset = rst)
         def afull_proc():
-            if (rst):
-                afull.next = 0
-            else:
-                afull.next = (count_new >= depth-afull_th)
+            afull.next = (count_new >= depth-afull_th)
 
     ''' AlmostEmpty flag '''
     if (aempty != None):
         if (aempty_th == None):
             aempty_th = depth//2
-        @always(clk.posedge)
+        @always_seq(clk.posedge, reset = rst)
         def aempty_proc():
-            if (rst):
-                aempty.next = 1
-            else:
-                aempty.next = (count_new <=  aempty_th)
+            aempty.next = (count_new <=  aempty_th)
 
 
     #===========================================================================
@@ -157,23 +146,17 @@ def fifo(rst, clk, full, we, din, empty, re, dout, afull=None, aempty=None, aful
     #===========================================================================
     ''' Overflow flag '''
     if (ovf != None):
-        @always(clk.posedge)
+        @always_seq(clk.posedge, reset = rst)
         def ovf_proc():
-            if (rst):
-                ovf.next = 0
-            else:
-                if (we and full_flg ):
-                    ovf.next = 1
+            if (we and full_flg ):
+                ovf.next = 1
 
     ''' Underflow flag '''
     if (udf != None):
-        @always(clk.posedge)
+        @always_seq(clk.posedge, reset = rst)
         def udf_proc():
-            if (rst):
-                udf.next = 0
-            else:
-                if (re and empty_flg):
-                    udf.next = 1
+            if (re and empty_flg):
+                udf.next = 1
 
     if width>0:
         #===========================================================================
